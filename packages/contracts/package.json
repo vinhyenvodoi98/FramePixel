@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "compile": "hardhat compile",
-    "goerli": "hardhat run scripts/deploy.ts --network goerli",
-    "mumbai": "hardhat run scripts/deploy.ts --network mumbai"
+    "baseSepolia": "hardhat run scripts/deploy.ts --network baseSepolia"
   },
   "keywords": [],
   "author": "",

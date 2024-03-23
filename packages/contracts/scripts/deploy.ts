@@ -3,20 +3,20 @@ import fs from "fs";
 require('dotenv').config()
 
 async function main() {
-  const counter = await ethers.deployContract("Counter", [], {}) as any;
+  const board = await ethers.deployContract("Board", [], {}) as any;
 
-  await counter.waitForDeployment();
+  await board.waitForDeployment();
 
   console.log(
-    `deployed to ${counter.target}`
+    `deployed to ${board.target}`
   );
 
   const contractAddresses = readDataFromFile();
 
   if (contractAddresses[network.config.chainId as number]) {
-    contractAddresses[network.config.chainId as number].address = counter.target;
+    contractAddresses[network.config.chainId as number].address = board.target;
   } else {
-    contractAddresses[network.config.chainId as number] = { address: counter.target };
+    contractAddresses[network.config.chainId as number] = { address: board.target };
   }
   // Save the updated array to the JSON file
   writeDataToFile(contractAddresses);
