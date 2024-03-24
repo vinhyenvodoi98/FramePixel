@@ -6,7 +6,6 @@ import contractAddress from '../../../contracts/contract-address.json'
 import contractAbi from '../../../contracts/artifacts/contracts/Board.sol/Board.json'
 import {
   createPublicClient,
-  getContract,
   http,
 } from "viem";
 
@@ -19,21 +18,19 @@ const handleRequest = frames(async (ctx:any) => {
     chain: baseSepolia,
     transport: http(),
   });
-  const board = getContract({
+  const board = await publicClient.readContract({
     address: contractAddress["84532"].address as `0x${string}`,
     abi: contractAbi.abi,
-    // @ts-ignore
-    client: publicClient,
-  });
-  // @ts-ignore
-  const data = await board.read.getBoard([]) as string[][];
+    functionName: 'getBoard',
+  })  as string[][];
+
   return {
     version: "vNext",
     image: (
       <div tw="w-full h-full bg-slate-200 text-white justify-center items-center flex flex-col">
         <p tw="text-slate-900 text-center">This is a 20x20 table</p>
         <p tw="text-slate-900 text-center">Please enter [0-19] [0-19] into the input and select the color</p>
-        <FrameBoard board={data}/>
+        <FrameBoard board={board}/>
       </div>
     ),
     imageOptions: {
