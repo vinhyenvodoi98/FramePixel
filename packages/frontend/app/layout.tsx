@@ -15,6 +15,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" data-theme="nord">
+      <meta property="fc:frame" content="vNext" />
       <body>
         {children}
       </body>
