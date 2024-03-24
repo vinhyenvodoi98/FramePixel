@@ -24,11 +24,11 @@ export async function POST(
 
   let x, y, color;
 
-  if(frameMessage.buttonIndex === 0) {
+  if(frameMessage.buttonIndex === 1) {
     color = colorOptions.red
-  } else if (frameMessage.buttonIndex === 1) {
+  } else if (frameMessage.buttonIndex === 2) {
     color = colorOptions.blue
-  } else if (frameMessage.buttonIndex === 2){
+  } else if (frameMessage.buttonIndex === 3){
     color = colorOptions.yellow
   } else {
     throw new Error("No color selected");
