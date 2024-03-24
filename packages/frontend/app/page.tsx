@@ -5,8 +5,8 @@ import { vercelURL } from "./utils";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: "New api example",
-    description: "This is a new api example",
+    title: "FlamePixel",
+    description: "We have 1 days to place pixel then we can claim it as NFT",
     other: {
       ...(await fetchMetadata(
         new URL(
