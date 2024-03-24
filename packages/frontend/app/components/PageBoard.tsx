@@ -1,74 +1,106 @@
 'use client'
 import Board from './Board';
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState, useEffect } from "react";
+import Palette from './Palette';
+import Header from './Header';
+import Providers from './Provider';
+import { useContractReads, usePrepareContractWrite, useAccount, useContractWrite } from 'wagmi';
+
+import contractAddress from '../../../contracts/contract-address.json'
+import contractAbi from '../../../contracts/artifacts/contracts/Board.sol/Board.json'
+
+const colorOptions = {
+  red: '#FF0000',
+  yellow: '#FFFF00',
+  blue: '#0000FF',
+}
 
 export default function PageBoard() {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [scale, setScale] = useState(1);
+  return(
+    <Providers>
+      <Header />
+      <Body/>
+    </Providers>
+  )
+}
+
+const Body = () => {
+  const [selectedColor, setSelectedColor]=useState<string>("#FF0000")
   const canvasRef = useRef<HTMLDivElement>(null);
   const [coordinates, setCoordinates] = useState<{ x: number; y: number }>({
     x: 0,
     y: 0,
   });
+  const rowIds = Array.from({ length: 50 }, (_, index) => index);
+  const { address } = useAccount()
 
-  // const { data: grid, refetch } = useContractReads({
-  //   contracts: rowIds.map((id) => ({
-  //     address: superPlaceAddress.address as `0x${string}`,
-  //     abi: superPlaceAbi.abi as any,
-  //     functionName: 'getCanvas',
-  //     args: [id as any],
-  //     chainId: 420, // only call from op-goerli
-  //   })),
-  //   cacheTime: 10_000,
-  //   staleTime: 10_000,
-  // });
+  const { data: grid, refetch } = useContractReads({
+    contracts: rowIds.map((id) => ({
+      address: contractAddress["84532"].address as `0x${string}`,
+      abi: contractAbi.abi as any,
+      functionName: 'getBoard',
+      args: [id as any],
+      chainId: 420, // only call from op-goerli
+    })),
+    cacheTime: 10_000,
+    staleTime: 10_000,
+  });
 
-  const gridColors: any = useMemo(() => {
-    return Array.from({ length: 100 }, () => new Array(100).fill('white'));
+  useEffect(() => {
+    // Call fetchData immediately when the component renders
+    refetch?.()
+
+    // Set up an interval to call fetchData every 10 seconds
+    const interval = setInterval(() => {
+      refetch?.()
+    }, 10000); // 10000 milliseconds = 10 seconds
+
+    // Cleanup khi component unmount
+    return () => {
+      clearInterval(interval);
+    };
   }, []);
 
-  const handleMouseDown = (e: any) => {
-    const startX = e.clientX - position.x;
-    const startY = e.clientY - position.y;
+  const gridColors:any = useMemo(() => {
+    return grid ?
+      grid.map((obj:any) => obj.result?.map((value:string) => value === "" ? "white" : value))
+      : Array.from({ length: 100 }, () => new Array(50).fill('white'));
+  }, [grid]);
 
-    const handleMouseMove = (e: any) => {
-      setPosition({
-        x: e.clientX - startX,
-        y: e.clientY - startY,
-      });
-    };
 
-    const handleMouseUp = () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mouseup', handleMouseUp);
-    };
+  const { config } = usePrepareContractWrite({
+		address: contractAddress["84532"].address as `0x${string}`,
+		abi: contractAbi.abi,
+		functionName: 'place',
+		args: [{
+			user: address,
+      x: coordinates.x, //x
+      y: coordinates.y, //y
+      color: selectedColor  //color
+    }] as any,
+	})
 
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mouseup', handleMouseUp);
-  };
+	const { write, isLoading, isSuccess } = useContractWrite(config)
 
-  const handleWheel = (e: any) => {
-    e.preventDefault();
-    const newScale = Math.max(0.1, Math.min(scale + e.deltaY * -0.001, 3));
-    setScale(newScale);
-  };
-
-  return(
+  return (
     <div
-      className='relative bg-base-100 h-[600px] flex justify-center items-center'
-      // style={{
-      //   transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
-      // }}
-      onMouseDown={handleMouseDown}
-      onWheel={handleWheel}
-    >
-      {gridColors && (
-        <Board
-          ref={canvasRef}
-          gridColors={gridColors}
-          setCoordinates={setCoordinates}
+        className='relative bg-base-100 h-[600px] flex flex-col gap-4 justify-center items-center'
+      >
+        {gridColors && (
+          <Board
+            ref={canvasRef}
+            gridColors={gridColors}
+            setCoordinates={setCoordinates}
+          />
+        )}
+
+        <Palette
+          colorOptions={colorOptions}
+          coordinates={coordinates}
+          setSelectedColor={setSelectedColor}
+          placePixel={write}
+          selectedColor={selectedColor}
         />
-      )}
-    </div>
+      </div>
   )
 }

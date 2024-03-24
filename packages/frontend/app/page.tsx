@@ -97,13 +97,19 @@ export default async function Home({ searchParams }: NextServerPageProps) {
             )}
           </div> */}
         </FrameImage>
-        <FrameInput text="put some text here" />
+        <FrameInput text="Put Coordinates example : 15-15" />
         <FrameButton>
-          {state?.active === "1" ? "Active" : "Inactive"}
+          🟥
         </FrameButton>
         <FrameButton>
+          🟦
+        </FrameButton>
+        <FrameButton>
+          🟨
+        </FrameButton>
+        {/* <FrameButton>
           {state?.active === "2" ? "Active" : "Inactive"}
-        </FrameButton>
+        </FrameButton> */}
         <FrameButton action="link" target={`https://www.google.com`}>
           External
         </FrameButton>
