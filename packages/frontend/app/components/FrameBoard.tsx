@@ -6,7 +6,7 @@ export default function FrameBoard({board}: {board:string[][]}) {
 
     for (let row = 0; row < gridRows; row++) {
       for (let col = 0; col < gridCols; col++) {
-        const cellColor = board[row][col];
+        const cellColor = board[row]![col];
         gridCells.push(
           <div
             key={`${row}-${col}`}

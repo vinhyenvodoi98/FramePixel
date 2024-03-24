@@ -32,7 +32,6 @@ export const wagmiConfig = createConfig({
   autoConnect: true,
   connectors,
   publicClient,
-  ssr: true,
 });
 
 export { chains };

@@ -34,7 +34,7 @@ export async function POST(
     throw new Error("No color selected");
   }
 
-  if(frameMessage.inputText !== "") {
+  if(!!frameMessage.inputText && frameMessage.inputText !== "") {
     const parts = frameMessage.inputText.split('-');
     if (parts.length !== 2) {
       throw new Error("Wrong format");
@@ -58,8 +58,9 @@ export async function POST(
     method: "eth_sendTransaction",
     params: {
       abi: contractAbi.abi as Abi,
-      to: contractAddress["84532"].address,
-      data: calldata,
+      to: contractAddress["84532"].address as `0x${string}`,
+      data: calldata as any,
+      value: "0"
     },
   });
 }

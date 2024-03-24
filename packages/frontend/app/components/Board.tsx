@@ -22,7 +22,7 @@ const Broad: React.ForwardRefRenderFunction<HTMLDivElement, Props> = (
 
     for (let row = 0; row < gridRows; row++) {
       for (let col = 0; col < gridCols; col++) {
-        const cellColor = gridColors[row][col];
+        const cellColor = gridColors[row]![col];
         gridCells.push(
           <div
             key={`${row}-${col}`}

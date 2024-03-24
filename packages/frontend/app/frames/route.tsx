@@ -14,19 +14,19 @@ const frames = createFrames({
   basePath: "/frames",
 });
 
-const handleRequest = frames(async (ctx) => {
+const handleRequest = frames(async (ctx:any) => {
   const publicClient = createPublicClient({
     chain: baseSepolia,
     transport: http(),
   });
 
   const board = getContract({
-    address: contractAddress["84532"].address,
+    address: contractAddress["84532"].address as `0x${string}`,
     abi: contractAbi.abi,
     client: publicClient,
   });
-
-  const data = await board.read.getBoard([]);
+  // @ts-ignore
+  const data = await board.read.getBoard([]) as string[][];
   return {
     image: (
       <div tw="w-full h-full bg-slate-200 text-white justify-center items-center flex flex-col">

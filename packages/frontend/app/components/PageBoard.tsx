@@ -54,6 +54,7 @@ const Body = () => {
 
   const gridColors:any = useMemo(() => {
     return grid ?
+      // @ts-ignore
       grid.map((obj:any) => obj?.map((value:string) => value === "" ? "white" : value))
       : Array.from({ length: 20 }, () => new Array(20).fill('white'));
   }, [grid]);
