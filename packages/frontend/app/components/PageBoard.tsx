@@ -9,6 +9,7 @@ import { useContractRead, usePrepareContractWrite, useAccount, useContractWrite 
 import contractAddress from '../../../contracts/contract-address.json'
 import contractAbi from '../../../contracts/artifacts/contracts/Board.sol/Board.json'
 import { colorOptions } from '../config/color';
+import Wallet from './Wallet';
 
 export default function PageBoard() {
   return(
@@ -26,7 +27,7 @@ const Body = () => {
     x: 0,
     y: 0,
   });
-
+  const { address } = useAccount()
   const { data: grid, refetch } = useContractRead({
     address: contractAddress["84532"].address as `0x${string}`,
     abi: contractAbi.abi as any,
@@ -83,14 +84,18 @@ const Body = () => {
             setCoordinates={setCoordinates}
           />
         )}
-
-        <Palette
+        {
+          address ? <Palette
           colorOptions={colorOptions}
           coordinates={coordinates}
           setSelectedColor={setSelectedColor}
           placePixel={write}
           selectedColor={selectedColor}
-        />
+        /> :
+        <div>
+          <Wallet/>
+        </div>
+        }
       </div>
   )
 }
