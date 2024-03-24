@@ -19,10 +19,10 @@ const handleRequest = frames(async (ctx:any) => {
     chain: baseSepolia,
     transport: http(),
   });
-
   const board = getContract({
     address: contractAddress["84532"].address as `0x${string}`,
     abi: contractAbi.abi,
+    // @ts-ignore
     client: publicClient,
   });
   // @ts-ignore
