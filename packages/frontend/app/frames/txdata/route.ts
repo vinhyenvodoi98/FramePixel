@@ -7,9 +7,9 @@ import {
   encodeFunctionData,
 } from "viem";
 
-import contractAddress from '../../../contracts/contract-address.json'
-import contractAbi from '../../../contracts/artifacts/contracts/Board.sol/Board.json'
-import { colorOptions } from "../config/color";
+import contractAddress from '../../../../contracts/contract-address.json'
+import contractAbi from '../../../../contracts/artifacts/contracts/Board.sol/Board.json'
+import { colorOptions } from "../../config/color";
 
 export async function POST(
   req: NextRequest
