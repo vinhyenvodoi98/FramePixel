@@ -1,6 +1,7 @@
 import PageBoard from "./components/PageBoard";
 import type { Metadata } from "next";
 import { fetchMetadata } from "frames.js/next";
+import { vercelURL } from "./utils";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -10,7 +11,7 @@ export async function generateMetadata(): Promise<Metadata> {
       ...(await fetchMetadata(
         new URL(
           "/frames",
-          process.env.VERCEL_URL || "http://localhost:3000"
+          vercelURL() || "http://localhost:3000"
         )
       )),
     },
