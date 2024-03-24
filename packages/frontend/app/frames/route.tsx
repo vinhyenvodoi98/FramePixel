@@ -28,6 +28,7 @@ const handleRequest = frames(async (ctx:any) => {
   // @ts-ignore
   const data = await board.read.getBoard([]) as string[][];
   return {
+    version: "vNext",
     image: (
       <div tw="w-full h-full bg-slate-200 text-white justify-center items-center flex flex-col">
         <p tw="text-slate-900 text-center">This is a 20x20 table</p>
