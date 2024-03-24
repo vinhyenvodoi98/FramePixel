@@ -7,9 +7,9 @@ const Broad: React.ForwardRefRenderFunction<HTMLDivElement, Props> = (
   { gridColors, setCoordinates }: Props,
   ref
 ) => {
-  const gridRows = 50;
-  const gridCols = 50;
-  const cellSize = 8;
+  const gridRows = 20;
+  const gridCols = 20;
+  const cellSize = 16;
   const [cellHover, setCellHover] = useState<any>(null);
 
   const onSelectCell = ({ row, col }: any) => {
@@ -47,7 +47,7 @@ const Broad: React.ForwardRefRenderFunction<HTMLDivElement, Props> = (
 
   return (
     <div ref={ref} className='flex items-center flex-col'>
-      <div className='flex flex-wrap w-[404px] border-2 border-black'>{generateGridCells()}</div>
+      <div className='flex flex-wrap w-[324px] border-2 border-black'>{generateGridCells()}</div>
     </div>
   );
 };

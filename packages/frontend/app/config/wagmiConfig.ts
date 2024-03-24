@@ -14,7 +14,7 @@ const { chains, publicClient } = configureChains(
       rpc: (chain: any) => {
         if (chain.id === baseSepolia.id)
           return {
-            http: baseSepolia.rpcUrls.public.http[0],
+            http: "https://sepolia.base.org",
           };
         return null;
       },
